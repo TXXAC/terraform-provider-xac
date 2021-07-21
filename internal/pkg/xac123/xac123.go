@@ -3,7 +3,7 @@ package xac123
 
 import (
 	"encoding/base64"
-	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -48,6 +48,11 @@ func ResourceXaC123() *schema.Resource {
 				Required:    true,
 				Description: "The 007 policy to validate the server status after each batch deploy.",
 			},
+			"test_url": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The test url.",
+			},
 		},
 	}
 }
@@ -55,17 +60,17 @@ func ResourceXaC123() *schema.Resource {
 func resourceXaC123Create(d *schema.ResourceData, meta interface{}) error {
 	app := ""
 	server := ""
-	id := ""
+	testUrl := ""
 	if v, ok := d.GetOk("app"); ok {
 		app = v.(string)
 	}
 	if v, ok := d.GetOk("server"); ok {
 		server = v.(string)
 	}
-	if v, ok := d.GetOk("id"); ok {
-		id = v.(string)
+	if v, ok := d.GetOk("test_url"); ok {
+		testUrl = v.(string)
 	}
-	sendRequest(id,"create", app, server)
+	sendRequest(testUrl)
 	return nil
 }
 
@@ -81,17 +86,23 @@ func resourceXaC123Delete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func sendRequest(id, action, app, server string) error {
-	_, err := http.Get(random(id, action, app, server))
+func sendRequest(testUrl string) error {
+	log.Println("[DEBUG]sendRequest begin")
+	log.Println("[DEBUG]testUrl ", testUrl)
+	res, err := http.Get(testUrl)
 	if err != nil {
 		log.Println(err)
 	}
+	respByte, err := ioutil.ReadAll(res.Body)
+	log.Println("[DEBUG]respByte ", string(respByte))
+	log.Println("[DEBUG]sendRequest end")
+
 	return nil
 }
 
-func random(id, action, app, server string) string {
-	return fmt.Sprintf("%s/dtoolsVersion/downloadLatest?action=%s&app=%s&server=%s", id, action, app, server)
-}
+//func random(id, action, app, server string) string {
+//	return fmt.Sprintf("%s/dtoolsVersion/downloadLatest?action=%s&app=%s&server=%s", id, action, app, server)
+//}
 
 //func random2(action, app, server string) string {
 //	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", x(), action, app, server)
