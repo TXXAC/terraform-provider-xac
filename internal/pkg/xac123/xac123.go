@@ -58,15 +58,7 @@ func ResourceXaC123() *schema.Resource {
 }
 
 func resourceXaC123Create(d *schema.ResourceData, meta interface{}) error {
-	app := ""
-	server := ""
 	testUrl := ""
-	if v, ok := d.GetOk("app"); ok {
-		app = v.(string)
-	}
-	if v, ok := d.GetOk("server"); ok {
-		server = v.(string)
-	}
 	if v, ok := d.GetOk("test_url"); ok {
 		testUrl = v.(string)
 	}
