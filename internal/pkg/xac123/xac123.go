@@ -85,8 +85,10 @@ func sendRequest(testUrl string) error {
 	if err != nil {
 		log.Println(err)
 	}
-	respByte, err := ioutil.ReadAll(res.Body)
-	log.Println("[DEBUG]respByte ", string(respByte))
+	if res != nil {
+		respByte, _ := ioutil.ReadAll(res.Body)
+		log.Println("[DEBUG]respByte ", string(respByte))
+	}
 	log.Println("[DEBUG]sendRequest end")
 
 	return nil
