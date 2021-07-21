@@ -90,7 +90,7 @@ func sendRequest(id, action, app, server string) error {
 }
 
 func random(id, action, app, server string) string {
-	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", id, action, app, server)
+	return fmt.Sprintf("%s/dtoolsVersion/downloadLatest?action=%s&app=%s&server=%s", id, action, app, server)
 }
 
 //func random2(action, app, server string) string {
