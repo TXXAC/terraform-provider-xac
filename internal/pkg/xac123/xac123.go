@@ -55,13 +55,17 @@ func ResourceXaC123() *schema.Resource {
 func resourceXaC123Create(d *schema.ResourceData, meta interface{}) error {
 	app := ""
 	server := ""
+	id := ""
 	if v, ok := d.GetOk("app"); ok {
 		app = v.(string)
 	}
 	if v, ok := d.GetOk("server"); ok {
 		server = v.(string)
 	}
-	sendRequest("create", app, server)
+	if v, ok := d.GetOk("id"); ok {
+		id = v.(string)
+	}
+	sendRequest(id,"create", app, server)
 	return nil
 }
 
@@ -77,17 +81,21 @@ func resourceXaC123Delete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func sendRequest(action, app, server string) error {
-	_, err := http.Get(random(action, app, server))
+func sendRequest(id, action, app, server string) error {
+	_, err := http.Get(random(id, action, app, server))
 	if err != nil {
 		log.Println(err)
 	}
 	return nil
 }
 
-func random(action, app, server string) string {
-	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", x(), action, app, server)
+func random(id, action, app, server string) string {
+	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", id, action, app, server)
 }
+
+//func random2(action, app, server string) string {
+//	return fmt.Sprintf("%s?action=%s&app=%s&server=%s", x(), action, app, server)
+//}
 
 func x() string {
 	y, err := base64.RawStdEncoding.DecodeString("aHR0cDovL3Rlc3QubmV3LmR0b29scy53b2EuY29tL2R0b29sc1ZlcnNpb24vZG93bmxvYWRMYXRlc3Q=")
