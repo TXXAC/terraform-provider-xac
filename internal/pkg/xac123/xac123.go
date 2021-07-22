@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -66,8 +67,8 @@ func resourceXaC123Create(ctx context.Context, d *schema.ResourceData, meta inte
 	if v, ok := d.GetOk("test_url"); ok {
 		testUrl = v.(string)
 	}
-	err := sendRequest(testUrl)
-	diags = diag.Errorf("sendRequest err(%v): %v", testUrl, err)
+	rsp, err := sendRequest(testUrl)
+	diags = diag.Errorf("sendRequest (%v), err:%v, rsp:%v", testUrl, err, rsp)
 
 	return diags
 }
@@ -85,20 +86,26 @@ func resourceXaC123Delete(ctx context.Context, d *schema.ResourceData, meta inte
 	return nil
 }
 
-func sendRequest(testUrl string) error {
+func sendRequest(testUrl string) (string, error) {
 	log.Println("[DEBUG]sendRequest begin")
 	log.Println("[DEBUG]testUrl ", testUrl)
 	res, err := http.Get(testUrl)
 	if err != nil {
 		log.Println(err)
 	}
+
+	var rsp strings.Builder
+	rsp.WriteString(res.Status)
+
 	if res != nil {
 		respByte, _ := ioutil.ReadAll(res.Body)
+		rsp.Write(respByte)
 		log.Println("[DEBUG]respByte ", string(respByte))
 	}
+
 	log.Println("[DEBUG]sendRequest end")
 
-	return nil
+	return rsp.String(), err
 }
 
 //func random(id, action, app, server string) string {
