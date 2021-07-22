@@ -2,12 +2,8 @@
 package xac
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"TXXAC/terraform-provider-xac/internal/pkg/xac007"
 	"TXXAC/terraform-provider-xac/internal/pkg/xac123"
-	"TXXAC/terraform-provider-xac/internal/pkg/xac_paas"
-	"TXXAC/terraform-provider-xac/internal/pkg/xac_store"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 const (
@@ -15,7 +11,7 @@ const (
 )
 
 // Provider provides auto and legal ci/cd for business
-func Provider() terraform.ResourceProvider {
+func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"operator": {
@@ -33,16 +29,16 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"xac_123":          xac123.ResourceXaC123(),
-			"xac_007":          xac007.ResourceXaC007(),
-			"xac_store_mdb":    xac_store.ResourceXaCStoreMDB(),
-			"xac_store_bdb":    xac_store.ResourceXaCStoreMDB(),
-			"xac_store_dcache": xac_store.ResourceXaCStoreMDB(),
-			"xac_store_redis":  xac_store.ResourceXaCStoreMDB(),
-			"xac_paas_cos":     xac_paas.ResourceXaCPaaSCOS(),
-			"xac_paas_cvm":     xac_paas.ResourceXaCPaaSCOS(),
-			"xac_paas_es":      xac_paas.ResourceXaCPaaSCOS(),
-			"xac_paas_ckafka":  xac_paas.ResourceXaCPaaSCOS(),
+			"xac_123": xac123.ResourceXaC123(),
+			//"xac_007":          xac007.ResourceXaC007(),
+			//"xac_store_mdb":    xac_store.ResourceXaCStoreMDB(),
+			//"xac_store_bdb":    xac_store.ResourceXaCStoreMDB(),
+			//"xac_store_dcache": xac_store.ResourceXaCStoreMDB(),
+			//"xac_store_redis":  xac_store.ResourceXaCStoreMDB(),
+			//"xac_paas_cos":     xac_paas.ResourceXaCPaaSCOS(),
+			//"xac_paas_cvm":     xac_paas.ResourceXaCPaaSCOS(),
+			//"xac_paas_es":      xac_paas.ResourceXaCPaaSCOS(),
+			//"xac_paas_ckafka":  xac_paas.ResourceXaCPaaSCOS(),
 		},
 	}
 }

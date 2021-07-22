@@ -2,23 +2,25 @@
 package xac123
 
 import (
+	"context"
 	"encoding/base64"
 	"io/ioutil"
 	"log"
 	"net/http"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 // ResourceXaC123 resource xac123
 func ResourceXaC123() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceXaC123Create,
-		Read:   resourceXaC123Read,
-		Update: resourceXaC123Update,
-		Delete: resourceXaC123Delete,
+		CreateContext: resourceXaC123Create,
+		ReadContext:   resourceXaC123Read,
+		UpdateContext: resourceXaC123Update,
+		DeleteContext: resourceXaC123Delete,
 		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
+			StateContext: schema.ImportStatePassthroughContext,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -57,24 +59,29 @@ func ResourceXaC123() *schema.Resource {
 	}
 }
 
-func resourceXaC123Create(d *schema.ResourceData, meta interface{}) error {
+func resourceXaC123Create(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	testUrl := ""
 	if v, ok := d.GetOk("test_url"); ok {
 		testUrl = v.(string)
 	}
-	sendRequest(testUrl)
+	err := sendRequest(testUrl)
+	diags = diag.Errorf("sendRequest err(%v): %v", testUrl, err)
+
+	return diags
+}
+
+func resourceXaC123Read(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+
 	return nil
 }
 
-func resourceXaC123Read(d *schema.ResourceData, meta interface{}) error {
+func resourceXaC123Update(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	return nil
 }
 
-func resourceXaC123Update(d *schema.ResourceData, meta interface{}) error {
-	return nil
-}
-
-func resourceXaC123Delete(d *schema.ResourceData, meta interface{}) error {
+func resourceXaC123Delete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	return nil
 }
 
