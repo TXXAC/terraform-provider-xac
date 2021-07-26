@@ -70,19 +70,25 @@ func resourceXaC123Create(ctx context.Context, d *schema.ResourceData, meta inte
 	rsp, err := sendRequest(testUrl)
 	diags = diag.Errorf("sendRequest (%v), err:%v, rsp:%v", testUrl, err, rsp)
 
+	log.Print("[INFO] Create")
+
 	return diags
 }
 
 func resourceXaC123Read(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 
+	log.Print("[INFO] Read")
+
 	return nil
 }
 
 func resourceXaC123Update(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	log.Print("[INFO] Update")
 	return nil
 }
 
 func resourceXaC123Delete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	log.Print("[INFO] Delete")
 	return nil
 }
 
